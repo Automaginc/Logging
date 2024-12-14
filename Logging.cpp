@@ -15,15 +15,15 @@
 
 #define GRABLOGFILE(x)                                                                                                                                                                                                                      \
     {                                                                                                                                                                                                                                       \
-        if (!AppleUIFramework::Logging::log_file_initalised)                                                                                                                                                                                \
+        if (!Automaginc::Logging::log_file_initalised)                                                                                                                                                                                \
         {                                                                                                                                                                                                                                   \
             InitLog();                                                                                                                                                                                                                      \
         }                                                                                                                                                                                                                                   \
                                                                                                                                                                                                                                             \
-        std::ofstream file(AppleUIFramework::Logging::log_file, std::ios_base::app);                                                                                                                                                        \
+        std::ofstream file(Automaginc::Logging::log_file, std::ios_base::app);                                                                                                                                                        \
         if (!file.is_open())                                                                                                                                                                                                                \
         {                                                                                                                                                                                                                                   \
-            AppleUIFramework::Logging::Error::LogError(AppleUIFramework::Logging::Error::GenerateError("Failed to open \"" + log_file.string() + "\"", "Either failed to open \"" + log_file.string() + "\", or failed to create"), false); \
+            Automaginc::Logging::Error::LogError(Automaginc::Logging::Error::GenerateError("Failed to open \"" + log_file.string() + "\"", "Either failed to open \"" + log_file.string() + "\", or failed to create"), false); \
         }                                                                                                                                                                                                                                   \
                                                                                                                                                                                                                                             \
         x;                                                                                                                                                                                                                                  \
@@ -31,7 +31,7 @@
         file.close();                                                                                                                                                                                                                       \
     }
 
-void AppleUIFramework::Logging::Error::LogError(Error error)
+void Automaginc::Logging::Error::LogError(Error error)
 {
     if (static_cast<int>(error.requires_verbose) <= static_cast<int>(verbose))
     {
@@ -47,7 +47,7 @@ void AppleUIFramework::Logging::Error::LogError(Error error)
     }
 }
 
-void AppleUIFramework::Logging::Error::LogError(Error error, bool write_to_log)
+void Automaginc::Logging::Error::LogError(Error error, bool write_to_log)
 {
     std::cerr << "Something has gone wrong with the log because this has been called...\n"
               << error.time << ": " << error.title << ":" << std::endl
@@ -62,7 +62,7 @@ void AppleUIFramework::Logging::Error::LogError(Error error, bool write_to_log)
     }
 }
 
-void AppleUIFramework::Logging::Error::Explode()
+void Automaginc::Logging::Error::Explode()
 {
     std::cerr << rang::fg::magenta << "Program requested explode. Listing log" << std::endl
               << rang::fg::reset;
@@ -70,9 +70,9 @@ void AppleUIFramework::Logging::Error::Explode()
     GRABLOGFILE(std::println(file, "Program requested explode. Listing log"));
 
     unsigned int repeat_times = 0;
-    for (size_t i = 0; i < AppleUIFramework::Logging::log.size(); i++)
+    for (size_t i = 0; i < Automaginc::Logging::log.size(); i++)
     {
-        if (i != 0 && static_cast<bool>((repeat_times += static_cast<int>(AppleUIFramework::Logging::log[i].IsSame(AppleUIFramework::Logging::log[i - 1])))))
+        if (i != 0 && static_cast<bool>((repeat_times += static_cast<int>(Automaginc::Logging::log[i].IsSame(Automaginc::Logging::log[i - 1])))))
         {
             continue;
         }
@@ -86,7 +86,7 @@ void AppleUIFramework::Logging::Error::Explode()
 
         std::cerr << rang::fg::magenta << i << ":" << rang::fg::reset << " ";
         GRABLOGFILE(std::print(file, "{}: ", i));
-        AppleUIFramework::Logging::log[i].Print();
+        Automaginc::Logging::log[i].Print();
     }
 
     auto stacktrace = std::stacktrace::current();
@@ -98,30 +98,30 @@ void AppleUIFramework::Logging::Error::Explode()
     std::abort();
 }
 
-auto AppleUIFramework::Logging::Error::GenerateError(std::string title, std::string description, bool requires_verbose) -> AppleUIFramework::Logging::Error
+auto Automaginc::Logging::Error::GenerateError(std::string title, std::string description, bool requires_verbose) -> Automaginc::Logging::Error
 {
     Error error = Error();
     error.title = title;
     error.description = description;
     auto stacktrace = std::stacktrace::current();
     error.stacktrace = std::to_string(stacktrace);
-    error.time = AppleUIFramework::Logging::GetFormattedTime();
+    error.time = Automaginc::Logging::GetFormattedTime();
     error.requires_verbose = requires_verbose;
 
     return error;
 }
 
-void AppleUIFramework::Logging::Error::CreateError(std::string title, std::string description, bool requires_verbose)
+void Automaginc::Logging::Error::CreateError(std::string title, std::string description, bool requires_verbose)
 {
     Error error = GenerateError(title, description, requires_verbose);
-    AppleUIFramework::Logging::log.push_back(EWL::GenerateError(error));
+    Automaginc::Logging::log.push_back(EWL::GenerateError(error));
     LogError(error);
 }
 
-void AppleUIFramework::Logging::Error::CreateErrorProgramPause(std::string title, std::string description, bool requires_verbose)
+void Automaginc::Logging::Error::CreateErrorProgramPause(std::string title, std::string description, bool requires_verbose)
 {
     Error error = GenerateError(title, description, requires_verbose);
-    AppleUIFramework::Logging::log.push_back(EWL::GenerateError(error));
+    Automaginc::Logging::log.push_back(EWL::GenerateError(error));
     LogError(error);
 
     std::cout << "Press Enter to continue...\n";
@@ -129,27 +129,27 @@ void AppleUIFramework::Logging::Error::CreateErrorProgramPause(std::string title
     std::cin.get();
 }
 
-void AppleUIFramework::Logging::Error::CreateErrorProgramExplode(std::string title, std::string description, bool requires_verbose)
+void Automaginc::Logging::Error::CreateErrorProgramExplode(std::string title, std::string description, bool requires_verbose)
 {
     Error error = GenerateError(title, description, requires_verbose);
-    AppleUIFramework::Logging::log.push_back(EWL::GenerateError(error));
+    Automaginc::Logging::log.push_back(EWL::GenerateError(error));
     LogError(error);
 
     Explode();
 }
 
-auto AppleUIFramework::Logging::Log::GenerateLog(std::string title, std::string description, bool requires_verbose) -> AppleUIFramework::Logging::Log
+auto Automaginc::Logging::Log::GenerateLog(std::string title, std::string description, bool requires_verbose) -> Automaginc::Logging::Log
 {
     Log thislog;
     thislog.title = title;
     thislog.description = description;
-    thislog.time = AppleUIFramework::Logging::GetFormattedTime();
+    thislog.time = Automaginc::Logging::GetFormattedTime();
     thislog.requires_verbose = requires_verbose;
 
     return thislog;
 }
 
-void AppleUIFramework::Logging::Log::LogLog(Log thislog)
+void Automaginc::Logging::Log::LogLog(Log thislog)
 {
     if (static_cast<int>(thislog.requires_verbose) <= static_cast<int>(verbose))
     {
@@ -160,30 +160,30 @@ void AppleUIFramework::Logging::Log::LogLog(Log thislog)
     }
 }
 
-void AppleUIFramework::Logging::Log::CreateLog(std::string title, std::string description, bool requires_verbose)
+void Automaginc::Logging::Log::CreateLog(std::string title, std::string description, bool requires_verbose)
 {
     Log thislog = GenerateLog(title, description, requires_verbose);
     log.push_back(EWL::GenerateLog(thislog));
     LogLog(thislog);
 }
 
-auto AppleUIFramework::Logging::GetFormattedTime() -> std::string
+auto Automaginc::Logging::GetFormattedTime() -> std::string
 {
     auto const time = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
     return std::format("[{:%Y-%m-%d %X}]", time);
 }
 
-void AppleUIFramework::Logging::InitLog()
+void Automaginc::Logging::InitLog()
 {
     std::string log_file_name = log_file_beginning + std::regex_replace(GetFormattedTime(), std::regex(":"), ";") + ".txt";
     log_file = log_file_location / log_file_name;
     std::filesystem::create_directories(log_file_location);
 
-    std::ofstream file(AppleUIFramework::Logging::log_file);
+    std::ofstream file(Automaginc::Logging::log_file);
     if (!file.is_open())
     {
         // we call the longer method to avoid trying to write to the log again
-        AppleUIFramework::Logging::Error::LogError(AppleUIFramework::Logging::Error::GenerateError("Failed to open \"" + log_file.string() + "\"", "Either failed to open \"" + log_file.string() + "\", or failed to create"), false);
+        Automaginc::Logging::Error::LogError(Automaginc::Logging::Error::GenerateError("Failed to open \"" + log_file.string() + "\"", "Either failed to open \"" + log_file.string() + "\", or failed to create"), false);
     }
 
     std::println(file, "{}: Log Initalized!", GetFormattedTime());
@@ -193,28 +193,28 @@ void AppleUIFramework::Logging::InitLog()
     log_file_initalised = true;
 }
 
-auto AppleUIFramework::Logging::EWL::GenerateLog(Log log) -> AppleUIFramework::Logging::EWL
+auto Automaginc::Logging::EWL::GenerateLog(Log log) -> Automaginc::Logging::EWL
 {
     EWL elboth;
     elboth.log = log;
     return elboth;
 }
 
-auto AppleUIFramework::Logging::EWL::GenerateWarning(Warning warning) -> AppleUIFramework::Logging::EWL
+auto Automaginc::Logging::EWL::GenerateWarning(Warning warning) -> Automaginc::Logging::EWL
 {
     EWL elboth;
     elboth.warning = warning;
     return elboth;
 }
 
-auto AppleUIFramework::Logging::EWL::GenerateError(Error error) -> AppleUIFramework::Logging::EWL
+auto Automaginc::Logging::EWL::GenerateError(Error error) -> Automaginc::Logging::EWL
 {
     EWL elboth;
     elboth.error = error;
     return elboth;
 }
 
-void AppleUIFramework::Logging::EWL::Print()
+void Automaginc::Logging::EWL::Print()
 {
     if (error.has_value())
     {
@@ -231,13 +231,13 @@ void AppleUIFramework::Logging::EWL::Print()
     }
 }
 
-auto AppleUIFramework::Logging::Warning::GenerateWarning(std::string title, std::string description, bool requires_verbose, bool use_stacktrace,
-                                                         bool use_stacktrace_verbose) -> AppleUIFramework::Logging::Warning
+auto Automaginc::Logging::Warning::GenerateWarning(std::string title, std::string description, bool requires_verbose, bool use_stacktrace,
+                                                         bool use_stacktrace_verbose) -> Automaginc::Logging::Warning
 {
     Warning warning;
     warning.title = title;
     warning.description = description;
-    warning.time = AppleUIFramework::Logging::GetFormattedTime();
+    warning.time = Automaginc::Logging::GetFormattedTime();
     warning.requires_verbose = requires_verbose;
     if (use_stacktrace || (use_stacktrace_verbose && verbose))
     {
@@ -248,14 +248,14 @@ auto AppleUIFramework::Logging::Warning::GenerateWarning(std::string title, std:
     return warning;
 }
 
-void AppleUIFramework::Logging::Warning::CreateWarning(std::string title, std::string description, bool requires_verbose, bool use_stacktrace, bool use_stacktrace_verbose)
+void Automaginc::Logging::Warning::CreateWarning(std::string title, std::string description, bool requires_verbose, bool use_stacktrace, bool use_stacktrace_verbose)
 {
     Warning warning = GenerateWarning(title, description, requires_verbose, use_stacktrace, use_stacktrace_verbose);
     log.push_back(EWL::GenerateWarning(warning));
     LogWarning(warning);
 }
 
-void AppleUIFramework::Logging::Warning::LogWarning(Warning thiswarning)
+void Automaginc::Logging::Warning::LogWarning(Warning thiswarning)
 {
     if (static_cast<int>(thiswarning.requires_verbose) <= static_cast<int>(verbose))
     {
@@ -274,22 +274,22 @@ void AppleUIFramework::Logging::Warning::LogWarning(Warning thiswarning)
     }
 }
 
-auto AppleUIFramework::Logging::Error::IsSameAs(Error thiserror) const -> bool
+auto Automaginc::Logging::Error::IsSameAs(Error thiserror) const -> bool
 {
     return title == thiserror.title && description == thiserror.description;
 }
 
-auto AppleUIFramework::Logging::Warning::IsSameAs(Warning thiswarning) const -> bool
+auto Automaginc::Logging::Warning::IsSameAs(Warning thiswarning) const -> bool
 {
     return title == thiswarning.title && description == thiswarning.description;
 }
 
-auto AppleUIFramework::Logging::Log::IsSameAs(Log thislog) const -> bool
+auto Automaginc::Logging::Log::IsSameAs(Log thislog) const -> bool
 {
     return title == thislog.title && description == thislog.description;
 }
 
-auto AppleUIFramework::Logging::EWL::IsSame(AppleUIFramework::Logging::EWL thisewl) -> bool
+auto Automaginc::Logging::EWL::IsSame(Automaginc::Logging::EWL thisewl) -> bool
 {
     if (thisewl.log.has_value() && this->log.has_value() && thisewl.log.value().IsSameAs(this->log.value()))
     {
@@ -307,7 +307,7 @@ auto AppleUIFramework::Logging::EWL::IsSame(AppleUIFramework::Logging::EWL thise
     return false;
 }
 
-void AppleUIFramework::Logging::SetupTerminator()
+void Automaginc::Logging::SetupTerminator()
 {
     std::set_terminate([]() {
         Error::CreateError("UNHANDLED EXCEPTION FROM std::terminate", "An Unhandled Exception was called from std::terminate - attemping to get message", false);
@@ -334,7 +334,7 @@ void AppleUIFramework::Logging::SetupTerminator()
             Warning::CreateWarning("FOUND UNHANDLED EXCEPTION WHAT() AS int", std::to_string(unsigned_int_exception), false, false, true);
         } catch (...)
         {
-            Warning::CreateWarning("COULDN'T FIND UNHANDLED EXCEPTION WHAT()", "Simply couldn't find out what type it is. Not a defined type in AppleUIFramework::Logging::SetupTerminator", false, false, true);
+            Warning::CreateWarning("COULDN'T FIND UNHANDLED EXCEPTION WHAT()", "Simply couldn't find out what type it is. Not a defined type in Automaginc::Logging::SetupTerminator", false, false, true);
         }
         std::abort();
     });
