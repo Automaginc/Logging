@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace AppleUIFramework
+namespace Automaginc
 {
 struct Logging
 {
@@ -96,10 +96,10 @@ struct Logging
     inline static bool write_to_file = false;
 #endif
     inline static std::filesystem::path log_file_location = "Logs";
-    inline static std::string log_file_beginning = "AppleUIFramework";
+    inline static std::string log_file_beginning = "Automaginc";
     inline static std::filesystem::path log_file;
 
   private:
     inline static bool log_file_initalised = false;
 };
-} // namespace AppleUIFramework
+} // namespace Automaginc
