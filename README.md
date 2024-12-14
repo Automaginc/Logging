@@ -1,2 +1,2 @@
 # Logging
-Over the top logging system, requiring stacktrace from C++23.
+An over the top logging system, requiring stacktrace from C++23.
