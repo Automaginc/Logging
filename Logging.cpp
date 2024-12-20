@@ -307,7 +307,7 @@ auto Automaginc::Logging::EWL::IsSame(Automaginc::Logging::EWL thisewl) -> bool
     return false;
 }
 
-void Automaginc::Logging::SetupTerminator()
+auto Automaginc::Logging::SetupTerminator() -> bool
 {
     std::set_terminate([]() {
         Error::CreateError("UNHANDLED EXCEPTION FROM std::terminate", "An Unhandled Exception was called from std::terminate - attemping to get message", false);
@@ -338,4 +338,6 @@ void Automaginc::Logging::SetupTerminator()
         }
         std::abort();
     });
+
+    return true;
 }
