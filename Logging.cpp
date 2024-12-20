@@ -13,22 +13,22 @@
 #include <rang.hpp>
 #include <string>
 
-#define GRABLOGFILE(x)                                                                                                                                                                                                                      \
-    {                                                                                                                                                                                                                                       \
-        if (!Automaginc::Logging::log_file_initalised)                                                                                                                                                                                \
-        {                                                                                                                                                                                                                                   \
-            InitLog();                                                                                                                                                                                                                      \
-        }                                                                                                                                                                                                                                   \
-                                                                                                                                                                                                                                            \
-        std::ofstream file(Automaginc::Logging::log_file, std::ios_base::app);                                                                                                                                                        \
-        if (!file.is_open())                                                                                                                                                                                                                \
-        {                                                                                                                                                                                                                                   \
+#define GRABLOGFILE(x)                                                                                                                                                                                                          \
+    {                                                                                                                                                                                                                           \
+        if (!Automaginc::Logging::log_file_initalised)                                                                                                                                                                          \
+        {                                                                                                                                                                                                                       \
+            InitLog();                                                                                                                                                                                                          \
+        }                                                                                                                                                                                                                       \
+                                                                                                                                                                                                                                \
+        std::ofstream file(Automaginc::Logging::log_file, std::ios_base::app);                                                                                                                                                  \
+        if (!file.is_open())                                                                                                                                                                                                    \
+        {                                                                                                                                                                                                                       \
             Automaginc::Logging::Error::LogError(Automaginc::Logging::Error::GenerateError("Failed to open \"" + log_file.string() + "\"", "Either failed to open \"" + log_file.string() + "\", or failed to create"), false); \
-        }                                                                                                                                                                                                                                   \
-                                                                                                                                                                                                                                            \
-        x;                                                                                                                                                                                                                                  \
-                                                                                                                                                                                                                                            \
-        file.close();                                                                                                                                                                                                                       \
+        }                                                                                                                                                                                                                       \
+                                                                                                                                                                                                                                \
+        x;                                                                                                                                                                                                                      \
+                                                                                                                                                                                                                                \
+        file.close();                                                                                                                                                                                                           \
     }
 
 void Automaginc::Logging::Error::LogError(Error error)
@@ -232,7 +232,7 @@ void Automaginc::Logging::EWL::Print()
 }
 
 auto Automaginc::Logging::Warning::GenerateWarning(std::string title, std::string description, bool requires_verbose, bool use_stacktrace,
-                                                         bool use_stacktrace_verbose) -> Automaginc::Logging::Warning
+                                                   bool use_stacktrace_verbose) -> Automaginc::Logging::Warning
 {
     Warning warning;
     warning.title = title;
@@ -338,6 +338,14 @@ auto Automaginc::Logging::SetupTerminator() -> bool
         }
         std::abort();
     });
+
+    if (setup_terminator_private)
+    {
+        Warning::CreateWarning("std::terminate setted up again", "Successfully setup std::terminate setup, again?");
+    } else
+    {
+        Log::CreateLog("std::terminate setted up", "Successfully setup std::terminator!");
+    }
 
     return true;
 }
