@@ -81,7 +81,7 @@ struct Logging
         auto IsSame(EWL thisewl) -> bool;
     };
 
-    static void SetupTerminator();
+    static auto SetupTerminator() -> bool;
 
     static auto GetFormattedTime() -> std::string;
     static void InitLog();
