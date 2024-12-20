@@ -101,5 +101,6 @@ struct Logging
 
   private:
     inline static bool log_file_initalised = false;
+    inline static bool setup_terminator_private = SetupTerminator();
 };
 } // namespace Automaginc
