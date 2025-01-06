@@ -6,6 +6,7 @@
 #include <format>
 #include <fstream>
 #include <iostream>
+#include <istream>
 #include <print>
 #include <regex>
 #include <stacktrace>
@@ -103,8 +104,10 @@ auto Automaginc::Logging::Error::GenerateError(std::string title, std::string de
     Error error = Error();
     error.title = title;
     error.description = description;
+
     auto stacktrace = std::stacktrace::current();
     error.stacktrace = std::to_string(stacktrace);
+
     error.time = Automaginc::Logging::GetFormattedTime();
     error.requires_verbose = requires_verbose;
 
