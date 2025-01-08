@@ -11,6 +11,8 @@ project "Logging"
     externalincludedirs { "rang/include", "StackWalker/Main/StackWalker" }
     filter { "system:linux", "action:gmake2" }
         links { "stdc++exp" }
+    filter { "system:macos", "action:gmake2" }
+        links { "stdc++exp" }
 
     filter { "system:windows" }
         defines { "WINDOWS" }
