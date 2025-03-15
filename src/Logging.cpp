@@ -41,10 +41,10 @@ void Automaginc::Logging::Error::LogError(Error error)
         std::cerr << rang::fg::blue << error.time << rang::fg::red << ": " << error.title << ":" << std::endl
                   << error.description << std::endl
                   << "Stacktrace:" << std::endl
-                  << error.stacktrace << std::endl
+                  << error.stacktrace << std::endl << std::endl
                   << rang::fg::reset;
 
-        GRABLOGFILE(std::println(file, "{}: {}:\n{}\nStacktrace:\n{}", error.time, error.title, error.description, error.stacktrace));
+        GRABLOGFILE(std::println(file, "{}: {}:\n{}\nStacktrace:\n{}\n", error.time, error.title, error.description, error.stacktrace));
     }
 }
 
@@ -54,12 +54,12 @@ void Automaginc::Logging::Error::LogError(Error error, bool write_to_log)
               << error.time << ": " << error.title << ":" << std::endl
               << error.description << std::endl
               << "Stacktrace:" << std::endl
-              << error.stacktrace << std::endl;
+              << error.stacktrace << std::endl << std::endl;
 
     if (write_to_log)
     {
-        std::cerr << "Log could be safe - this overload shouldn't be called unless there's something wrong with the log though\n";
-        GRABLOGFILE(std::println(file, "{}: {}:\n{}\nStacktrace:\n{}", error.time, error.title, error.description, error.stacktrace));
+        std::cerr << "Log could be safe - this overload shouldn't be called unless there's something wrong with the log though\n\n";
+        GRABLOGFILE(std::println(file, "{}: {}:\n{}\nStacktrace:\n{}\n", error.time, error.title, error.description, error.stacktrace));
     }
 }
 
@@ -95,7 +95,7 @@ void Automaginc::Logging::Error::Explode()
     
     //std::cerr << rang::fg::magenta << "Done listing log. std::abort-ing" << rang::fg::reset;
     //GRABLOGFILE(std::println(file, "Done listing log. std::abort-ing"));
-    std::cerr << rang::fg::magenta << "std::abort-ing" << rang::fg::reset;
+    std::cerr << rang::fg::magenta << "std::abort-ing" << std::endl << rang::fg::reset;
     GRABLOGFILE(std::println(file, "std::abort-ing"));
 
     // it's safe to call abort here - because we already said the stacktrace
@@ -160,9 +160,9 @@ void Automaginc::Logging::Log::LogLog(Log thislog)
     if (static_cast<int>(thislog.requires_verbose) <= static_cast<int>(verbose))
     {
         std::cout << rang::fg::blue << thislog.time << rang::fg::green << ": " << thislog.title << ":\n"
-                  << thislog.description << "\n"
+                  << thislog.description << "\n\n"
                   << rang::fg::reset;
-        GRABLOGFILE(std::println(file, "{}: {}:\n{}", thislog.time, thislog.title, thislog.description));
+        GRABLOGFILE(std::println(file, "{}: {}:\n{}\n", thislog.time, thislog.title, thislog.description));
     }
 }
 
@@ -192,6 +192,7 @@ void Automaginc::Logging::InitLog()
         Automaginc::Logging::Error::LogError(Automaginc::Logging::Error::GenerateError("Failed to open \"" + log_file.string() + "\"", "Either failed to open \"" + log_file.string() + "\", or failed to create"), false);
     }
 
+    std::println("{}: Log Initalized!", GetFormattedTime());
     std::println(file, "{}: Log Initalized!", GetFormattedTime());
 
     file.close();
@@ -233,7 +234,7 @@ void Automaginc::Logging::EWL::Print()
         Warning::LogWarning(warning.value());
     } else
     {
-        Error::LogError(Error::GenerateError("I don't contain error or log or warning?", "Wait, I don't contain a log or an error?"));
+        Error::LogError(Error::GenerateError("I don't contain error or log or warning?", "Wait, I don't contain a log or an error or a warning?"));
     }
 }
 
@@ -271,11 +272,11 @@ void Automaginc::Logging::Warning::LogWarning(Warning thiswarning)
         if (thiswarning.use_stacktrace || (thiswarning.use_stacktrace_verbose && verbose))
         {
             std::cout << "Stacktrace:\n"
-                      << thiswarning.stacktrace << rang::fg::reset;
+                      << thiswarning.stacktrace << "\n\n" << rang::fg::reset;
             GRABLOGFILE(std::println(file, "Stacktrace:{}", thiswarning.stacktrace));
         } else
         {
-            std::cout << rang::fg::reset;
+            std::cout << "\n" << rang::fg::reset;
         }
     }
 }
