@@ -195,8 +195,8 @@ void Automaginc::Logging::InitLog()
         Automaginc::Logging::Error::LogError(Automaginc::Logging::Error::GenerateError("Failed to open \"" + log_file.string() + "\"", "Either failed to open \"" + log_file.string() + "\", or failed to create"), false);
     }
 
-    std::println("{}: Log Initalized!", GetFormattedTime());
-    std::println(file, "{}: Log Initalized!", GetFormattedTime());
+    std::println("{}: Log Initalized!\n", GetFormattedTime());
+    std::println(file, "{}: Log Initalized!\n", GetFormattedTime());
 
     file.close();
 
