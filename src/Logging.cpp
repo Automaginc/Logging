@@ -65,11 +65,13 @@ void Automaginc::Logging::Error::LogError(Error error, bool write_to_log)
 
 void Automaginc::Logging::Error::Explode()
 {
-    std::cerr << rang::fg::magenta << "Program requested explode. Listing log" << std::endl
+    //std::cerr << rang::fg::magenta << "Program requested explode. Listing log" << std::endl
+    //          << rang::fg::reset;
+    std::cerr << rang::fg::magenta << "Program requested explode." << std::endl
               << rang::fg::reset;
-
-    GRABLOGFILE(std::println(file, "Program requested explode. Listing log"));
-
+    // GRABLOGFILE(std::println(file, "Program requested explode. Listing log"));
+    GRABLOGFILE(std::println(file, "Program requested explode."));
+    /*
     unsigned int repeat_times = 0;
     for (size_t i = 0; i < Automaginc::Logging::log.size(); i++)
     {
@@ -89,11 +91,12 @@ void Automaginc::Logging::Error::Explode()
         GRABLOGFILE(std::print(file, "{}: ", i));
         Automaginc::Logging::log[i].Print();
     }
-
-    auto stacktrace = std::stacktrace::current();
-
-    std::cerr << rang::fg::magenta << "Done listing log. std::abort-ing" << rang::fg::reset;
-    GRABLOGFILE(std::println(file, "Done listing log. std::abort-ing"));
+    */
+    
+    //std::cerr << rang::fg::magenta << "Done listing log. std::abort-ing" << rang::fg::reset;
+    //GRABLOGFILE(std::println(file, "Done listing log. std::abort-ing"));
+    std::cerr << rang::fg::magenta << "std::abort-ing" << rang::fg::reset;
+    GRABLOGFILE(std::println(file, "std::abort-ing"));
 
     // it's safe to call abort here - because we already said the stacktrace
     std::abort();
