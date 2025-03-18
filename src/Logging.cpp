@@ -7,13 +7,17 @@
 #include <fstream>
 #include <iostream>
 #include <istream>
-#include <print>
 #include <regex>
-#include <stacktrace>
-
-#include <rang.hpp>
 #include <string>
 
+#ifndef MACOS
+#include <print>
+#include <stacktrace>
+#endif
+
+#include <rang.hpp>
+
+#ifndef MACOS
 #define GRABLOGFILE(x)                                                                                                                                                                                                          \
     {                                                                                                                                                                                                                           \
         if (!Automaginc::Logging::log_file_initalised)                                                                                                                                                                          \
@@ -31,6 +35,10 @@
                                                                                                                                                                                                                                 \
         file.close();                                                                                                                                                                                                           \
     }
+#else
+// Yea we don't write to the log on MacOS for the time being because of the print include not being usable
+#define GRABLOGFILE(x)
+#endif
 
 void Automaginc::Logging::Error::LogError(Error error)
 {
@@ -111,8 +119,12 @@ auto Automaginc::Logging::Error::GenerateError(std::string title, std::string de
     error.title = title;
     error.description = description;
 
+#ifndef MACOS
     auto stacktrace = std::stacktrace::current();
     error.stacktrace = std::to_string(stacktrace);
+#else
+    error.stacktrace = "Stacktraces aren't supported on MacOS!"
+#endif
 
     error.time = Automaginc::Logging::GetFormattedTime();
     error.requires_verbose = requires_verbose;
@@ -184,6 +196,7 @@ auto Automaginc::Logging::GetFormattedTime() -> std::string
 
 void Automaginc::Logging::InitLog()
 {
+#ifndef MACOS
     std::string log_file_name = log_file_beginning + std::regex_replace(GetFormattedTime(), std::regex(":"), ";") + ".txt";
     log_file = log_file_location / log_file_name;
     std::filesystem::create_directories(log_file_location);
@@ -201,6 +214,9 @@ void Automaginc::Logging::InitLog()
     file.close();
 
     log_file_initalised = true;
+#else
+    std::cout << "Log files aren't supported on MacOS!" << std::endl;
+#endif
 }
 
 auto Automaginc::Logging::EWL::GenerateLog(Log log) -> Automaginc::Logging::EWL
@@ -251,8 +267,12 @@ auto Automaginc::Logging::Warning::GenerateWarning(std::string title, std::strin
     warning.requires_verbose = requires_verbose;
     if (use_stacktrace || (use_stacktrace_verbose && verbose))
     {
+#ifndef MACOS
         auto stacktrace = std::stacktrace::current();
         warning.stacktrace = std::to_string(stacktrace);
+#else
+        error.stacktrace = "Stacktraces aren't supported on MacOS!"
+#endif
     }
 
     return warning;
