@@ -1,17 +1,15 @@
 CompileFlags:
   Compiler: gcc
-  Add: 
-    - "--std=c++23"
+  Add:
+    - "--std=c++2b"
     - "-I../rang/include"
     - "-I../include"
 
 Diagnostics:
   ClangTidy:
-    Add: 
+    Add:
       - modernize-*
       - readability-*
       - cppcoreguidelines-*
     Remove:
       - cppcoreguidelines-pro-type-union-access
-
-

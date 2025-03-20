@@ -53,7 +53,7 @@ struct Logging
         std::string description;
         std::string stacktrace;
         std::string time;
-        bool requires_verbose{};
+        bool requires_verbose;
 
         friend Log;
         friend Warning;

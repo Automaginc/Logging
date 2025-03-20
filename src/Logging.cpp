@@ -2,8 +2,8 @@
 
 #include <chrono>
 #include <cstdlib>
+#include <ctime>
 #include <exception>
-#include <format>
 #include <fstream>
 #include <iostream>
 #include <istream>
@@ -123,7 +123,7 @@ auto Automaginc::Logging::Error::GenerateError(std::string title, std::string de
     auto stacktrace = std::stacktrace::current();
     error.stacktrace = std::to_string(stacktrace);
 #else
-    error.stacktrace = "Stacktraces aren't supported on MacOS!"
+    error.stacktrace = "Stacktraces aren't supported on MacOS!\n";
 #endif
 
     error.time = Automaginc::Logging::GetFormattedTime();
@@ -190,8 +190,10 @@ void Automaginc::Logging::Log::CreateLog(std::string title, std::string descript
 
 auto Automaginc::Logging::GetFormattedTime() -> std::string
 {
-    auto const time = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
-    return std::format("[{:%Y-%m-%d %X}]", time);
+    std::time_t t = std::time(0);   // get time now
+    std::unique_ptr<std::tm> now = std::unique_ptr<std::tm>(std::localtime(&t));
+    const int fix_time = 1900;
+    return "[" + std::to_string(now->tm_mday) + "/" + std::to_string(now->tm_mon) + "/" + std::to_string(now->tm_year + fix_time) + " " + std::to_string(now->tm_hour) + ":" + std::to_string(now->tm_min) + ":" + std::to_string(now->tm_sec) + "]";
 }
 
 void Automaginc::Logging::InitLog()
@@ -271,7 +273,7 @@ auto Automaginc::Logging::Warning::GenerateWarning(std::string title, std::strin
         auto stacktrace = std::stacktrace::current();
         warning.stacktrace = std::to_string(stacktrace);
 #else
-        error.stacktrace = "Stacktraces aren't supported on MacOS!"
+        warning.stacktrace = "Stacktraces aren't supported on MacOS!\n";
 #endif
     }
 
