@@ -190,10 +190,11 @@ void Automaginc::Logging::Log::CreateLog(std::string title, std::string descript
 
 auto Automaginc::Logging::GetFormattedTime() -> std::string
 {
-    std::time_t t = std::time(0);   // get time now
-    std::unique_ptr<std::tm> now = std::unique_ptr<std::tm>(std::localtime(&t));
+    std::time_t time = std::time(nullptr);   // get time now
+    // NOLINTNEXTLINE
+    std::tm now = *std::unique_ptr<std::tm>(std::localtime(&time));
     const int fix_time = 1900;
-    return "[" + std::to_string(now->tm_mday) + "/" + std::to_string(now->tm_mon) + "/" + std::to_string(now->tm_year + fix_time) + " " + std::to_string(now->tm_hour) + ":" + std::to_string(now->tm_min) + ":" + std::to_string(now->tm_sec) + "]";
+    return "[" + std::to_string(now.tm_mday) + "/" + std::to_string(now.tm_mon) + "/" + std::to_string(now.tm_year + fix_time) + " " + std::to_string(now.tm_hour) + ":" + std::to_string(now.tm_min) + ":" + std::to_string(now.tm_sec) + "]";
 }
 
 void Automaginc::Logging::InitLog()
