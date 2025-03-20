@@ -8,10 +8,10 @@ project "Logging"
 
     includedirs { "include" }
 
-    externalincludedirs { "rang/include", "StackWalker/Main/StackWalker" }
-    filter { "system:linux", "action:gmake2" }
+    externalincludedirs { "rang/include" }
+    filter { "system:linux", "action:gmake" }
         links { "stdc++exp" }
-    filter { "system:macos", "action:gmake2" }
+    filter { "system:macos", "action:gmake" }
         links { "stdc++exp" }
 
     filter { "system:windows" }
@@ -22,7 +22,7 @@ project "Logging"
         defines { "UNIX", "SOLARIS" }
     filter { "system:bsd" }
         defines { "UNIX", "BSD" }
-    filter { "system:macos" }
+    filter { "system:macosx" }
         defines { "UNIX", "MACOS" }
 
     filter { "configurations:Debug" }
