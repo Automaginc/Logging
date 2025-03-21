@@ -190,17 +190,19 @@ void Automaginc::Logging::Log::CreateLog(std::string title, std::string descript
 
 auto Automaginc::Logging::GetFormattedTime() -> std::string
 {
-    std::time_t time = std::time(nullptr);   // get time now
+    std::time_t time = std::time(nullptr); // get time now
     // NOLINTNEXTLINE
-    std::tm now = *std::unique_ptr<std::tm>(std::localtime(&time));
+    std::tm* now = localtime(&time);
     const int fix_time = 1900;
-    return "[" + std::to_string(now.tm_mday) + "/" + std::to_string(now.tm_mon) + "/" + std::to_string(now.tm_year + fix_time) + " " + std::to_string(now.tm_hour) + ":" + std::to_string(now.tm_min) + ":" + std::to_string(now.tm_sec) + "]";
+    std::string return_value = "[" + std::to_string(now->tm_mday) + "/" + std::to_string(now->tm_mon) + "/" + std::to_string(now->tm_year + fix_time) + " " + std::to_string(now->tm_hour) + ":" + std::to_string(now->tm_min) + ":" + std::to_string(now->tm_sec) + "]";
+
+    return return_value;
 }
 
 void Automaginc::Logging::InitLog()
 {
 #ifndef MACOS
-    std::string log_file_name = log_file_beginning + std::regex_replace(GetFormattedTime(), std::regex(":"), ";") + ".txt";
+    std::string log_file_name = log_file_beginning + std::regex_replace(std::regex_replace(GetFormattedTime(), std::regex(":"), ";"), std::regex("/"), ".") + ".txt";
     log_file = log_file_location / log_file_name;
     std::filesystem::create_directories(log_file_location);
 
