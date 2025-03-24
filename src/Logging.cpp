@@ -381,7 +381,13 @@ auto Automaginc::Logging::SetupTerminator() -> bool
         Warning::CreateWarning("std::terminate setted up again", "Successfully setup std::terminate setup, again?");
     } else
     {
-        Log::CreateLog("std::terminate setted up", "Successfully setup std::terminator!");
+        Log::CreateLog("Successfully set up std::terminate, welcome to Automaginc!", R"( ________      ___  ___      _________    ________      _____ ______       ________      ________      ___      ________       ________
+|\   __  \    |\  \|\  \    |\___   ___\ |\   __  \    |\   _ \  _   \    |\   __  \    |\   ____\    |\  \    |\   ___  \    |\   ____\
+\ \  \|\  \   \ \  \\\  \   \|___ \  \_| \ \  \|\  \   \ \  \\\__\ \  \   \ \  \|\  \   \ \  \___|    \ \  \   \ \  \\ \  \   \ \  \___|
+ \ \   __  \   \ \  \\\  \       \ \  \   \ \  \\\  \   \ \  \\|__| \  \   \ \   __  \   \ \  \  ___   \ \  \   \ \  \\ \  \   \ \  \
+  \ \  \ \  \   \ \  \\\  \       \ \  \   \ \  \\\  \   \ \  \    \ \  \   \ \  \ \  \   \ \  \|\  \   \ \  \   \ \  \\ \  \   \ \  \____
+   \ \__\ \__\   \ \_______\       \ \__\   \ \_______\   \ \__\    \ \__\   \ \__\ \__\   \ \_______\   \ \__\   \ \__\\ \__\   \ \_______\
+    \|__|\|__|    \|_______|        \|__|    \|_______|    \|__|     \|__|    \|__|\|__|    \|_______|    \|__|    \|__| \|__|    \|_______|)");
     }
 
     return true;
